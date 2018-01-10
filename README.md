@@ -6,5 +6,5 @@ This directory script allows you to manage the list of students enrolled at Codi
 
 * go to shell
 ```shell
-* $ ruby directory.rb
+$ ruby directory.rb
 ```
