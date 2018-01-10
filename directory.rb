@@ -72,7 +72,62 @@ end
 # Our code only works with the student name and cohort.
 # Add more information: hobbies, country of birth, height, etc.
 
+def add_new_data_to_hash(students)
+  students.each { |student|
+  student[:hobby]
+  student[:country_of_birth]
+  student[:height]
+  }
+end
 
+  # example of adding a hobby to a particular student
+  # people.each { |hash|
+  #  if hash[:name] == "justynia" then
+  #    hash[:hobby] = "kociaki"
+  #  end
+  #}
 
+# ----------------------- Exercise 6 -----------------------
+# Research how the method center() of the String class works.
+# Use it in your code to make the output beautifully aligned.
 
-people = input_students()
+people.each { |hash|
+  puts hash[:name].center(20)
+}
+
+# ----------------------- Exercise 7 -----------------------
+# In the input_students method the cohort value is hard-coded.
+# How can you ask for both the name and the cohort?
+# What if one of the values is empty? Can you supply a default value?
+# The input will be given to you as a string? How will you convert it to a symbol?
+# What if the user makes a typo?
+
+def input_students_two_values
+  students = []
+  puts "To finish hit return two times"
+  puts "put the name of the student"
+  name = gets.chomp.to_s
+  puts "put the cohort of the student"
+  cohort = gets.chomp.to_s
+  while !name.empty? || !cohort.empty? do
+    if name.empty? then
+      name = "Name not given".to_s
+    end
+    if cohort.empty? then
+      cohort = "Cohort not given".to_s
+    end
+    students << {name: name, cohort: cohort}
+    puts "Now we have #{students.count} students"
+    puts "put thename of the student"
+    name = gets.chomp.to_s
+    puts "put the cohort of the student"
+    cohort = gets.chomp.to_s
+  end
+  students
+end
+
+# ----------------------- Exercise 8 -----------------------
+# Once you complete the previous exercise, change the way the users are displayed:
+# print them grouped by cohorts. To do this, you'll need to get a list of all existing cohorts
+# (the map() method may be useful but it's not the only option),
+# iterate over it and only print the students from that cohort.
