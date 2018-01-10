@@ -1,16 +1,3 @@
-# students = [
-#   {name: "Dr. Hannibal Lecter", cohort: :november},
-#   {name: "Darth Vader", cohort: :november},
-#   {name: "Nurse Ratched", cohort: :november},
-#   {name: "Michael Corleone", cohort: :november},
-#   {name: "Alex DeLarge", cohort: :november},
-#   {name: "The Wicked Witch of the West", cohort: :november},
-#   {name: "Terminator", cohort: :november},
-#   {name: "Freddy Krueger", cohort: :november},
-#   {name: "The Joker", cohort: :november},
-#   {name: "Joffrey Baratheon", cohort: :november},
-#   {name: "Norman Bates", cohort: :november}
-# ]
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
@@ -27,26 +14,65 @@ def input_students
   students
 end
 
-
-
 def print_header
   puts "The students of Villains Academy"
   puts "-------------"
-end
-
-def print_students(students)
-  students.each { |student|
-    puts "#{student[:name]} #{student[:cohort]} cohort"
-  }
 end
 
 def print_footer(names)
   print "Overall, we have #{names.count} great students"
 end
 
-# the output of input_students method (it returns students) is assigned to a
-# new variable that we will use in the functions below 
+# ----------------------- Exercise 1 -----------------------
+# Print a number before the name of each student
+
+def print_students_with_number(students) # with each
+  students.each_with_index { |student, index|
+    puts "#{(index+1)} #{student[:name]} #{student[:cohort]} cohort"
+  }
+end
+
+# ----------------------- Exercise 2 -----------------------
+# Print the students whose name begins with a specific letter.
+
+def print_students_name_letter(students, letter)
+  puts "Students whose names start with #{letter}:"
+  students.each { |student|
+    if student[:name][0] == letter then
+      puts student[:name]
+    end
+  }
+end
+
+# ----------------------- Exercise 2 -----------------------
+# Print the students whose name is shorter than a given number
+
+def print_students_name_short(students, number)
+  puts "Students whose names are shorter than #{number}:"
+  students.each { |student|
+    if student[:name].length < number then
+      puts student[:name]
+    end
+  }
+end
+
+
+# ----------------------- Exercise 4 -----------------------
+# Rewrite the each() method that prints all students using while
+
+def print_students(students) # with while loop
+  student_analyzed = 0
+  while student_analyzed < students.length do
+    puts "#{students[student_analyzed][:name]} #{students[student_analyzed][:cohort]} cohort"
+    student_analyzed += 1
+  end
+end
+
+# ----------------------- Exercise 5 -----------------------
+# Our code only works with the student name and cohort.
+# Add more information: hobbies, country of birth, height, etc.
+
+
+
+
 people = input_students()
-print_header
-print_students(people)
-print_footer(people)
