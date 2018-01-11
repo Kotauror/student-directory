@@ -74,9 +74,9 @@ end
 
 def add_new_data_to_hash(students)
   students.each { |student|
-  student[:hobby]
-  student[:country_of_birth]
-  student[:height]
+    student[:hobby] = ""
+    student[:country_of_birth] = ""
+    student[:height] = ""
   }
 end
 
@@ -111,17 +111,17 @@ def input_students_two_values
   cohort = gets.chomp.to_s
   while !name.empty? || !cohort.empty? do
     if name.empty? then
-      name = "Name not given".to_s
+      name = "Name not given".to_sym
     end
     if cohort.empty? then
-      cohort = "Cohort not given".to_s
+      cohort = "Cohort not given".to_sym
     end
     students << {name: name, cohort: cohort}
     puts "Now we have #{students.count} students"
     puts "put thename of the student"
-    name = gets.chomp.to_s
+    name = gets.chomp.to_sym
     puts "put the cohort of the student"
-    cohort = gets.chomp.to_s
+    cohort = gets.chomp.to_sym
   end
   students
 end
@@ -131,3 +131,75 @@ end
 # print them grouped by cohorts. To do this, you'll need to get a list of all existing cohorts
 # (the map() method may be useful but it's not the only option),
 # iterate over it and only print the students from that cohort.
+
+cohorts = {
+  november: [],
+  april: [],
+  june: []
+}
+
+people.each { |hash|
+  if cohorts.has_key?(hash[:cohort]) then
+    cohorts[hash[:cohort]].push(hash[:name])
+  else
+    cohorts[hash[:cohort]] = [hash[:name]] #creates list with one element
+  end
+}
+
+# ----------------------- Exercise 9 -----------------------
+# Right now if we have only one student, the user will see a message
+# "Now we have 1 students", whereas it should be "Now we have 1 student".
+# How can you fix it so that it used singular form when appropriate and plural
+# form otherwise?
+
+def input_students_two_values
+  students = []
+  puts "To finish hit return two times"
+  puts "put the name of the student"
+  name = gets.chomp.to_s
+  puts "put the cohort of the student"
+  cohort = gets.chomp.to_s
+  while !name.empty? || !cohort.empty? do
+    if name.empty? then
+      name = "Name not given".to_sym
+    end
+    if cohort.empty? then
+      cohort = "Cohort not given".to_sym
+    end
+    students << {name: name, cohort: cohort}
+    puts "Now we have #{students.count} student#{students.count > 1 ? "s" : ""}"
+    puts "put thename of the student"
+    name = gets.chomp.to_sym
+    puts "put the cohort of the student"
+    cohort = gets.chomp.to_sym
+  end
+  students
+end
+
+# ----------------------- Exercise 10 -----------------------
+# We've been using the chomp() method to get rid of the last return character.
+# RETURN - NOWA LINIA - also a character
+# Find another method among those provided by the String class that could be used
+# for the same purpose (although it will require passing some arguments).
+
+students = []
+puts "To finish type >STOP<"
+puts "put the name of the student"
+name = gets.chomp.to_sym #chomp - removes new lines (without chomp the input will never be empty and we will never end the form)
+puts "put the cohort of the student"
+cohort = gets.rstrip.to_sym # rstrip - removes whitespaces and empty lines
+while !name.empty? || !cohort.empty? do
+  if name.empty? then
+    name = "Name not given".to_sym
+  end
+  if cohort.empty? then
+    cohort = "Cohort not given".to_sym
+  end
+  students << {name: name, cohort: cohort}
+  puts "Now we have #{students.count} student#{students.count > 1 ? "s" : ""}"
+  puts "put thename of the student"
+  name = gets.chomp.to_sym
+  puts "put the cohort of the student"
+  cohort = gets.chomp.to_sym
+end
+students
