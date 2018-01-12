@@ -181,25 +181,56 @@ end
 # RETURN - NOWA LINIA - also a character
 # Find another method among those provided by the String class that could be used
 # for the same purpose (although it will require passing some arguments).
-
-students = []
-puts "To finish type >STOP<"
-puts "put the name of the student"
-name = gets.chomp.to_sym #chomp - removes new lines (without chomp the input will never be empty and we will never end the form)
-puts "put the cohort of the student"
-cohort = gets.rstrip.to_sym # rstrip - removes whitespaces and empty lines
-while !name.empty? || !cohort.empty? do
-  if name.empty? then
-    name = "Name not given".to_sym
-  end
-  if cohort.empty? then
-    cohort = "Cohort not given".to_sym
-  end
-  students << {name: name, cohort: cohort}
-  puts "Now we have #{students.count} student#{students.count > 1 ? "s" : ""}"
-  puts "put thename of the student"
-  name = gets.chomp.to_sym
+def input_students_two_values
+  students = []
+  puts "To finish hit return two times"
+  puts "put the name of the student"
+  name = gets.chomp.to_sym #chomp - removes new lines (without chomp the input will never be empty and we will never end the form)
   puts "put the cohort of the student"
-  cohort = gets.chomp.to_sym
+  cohort = gets.rstrip.to_sym # rstrip - removes whitespaces and empty lines
+  while !name.empty? || !cohort.empty? do
+    if name.empty? then
+      name = "Name not given".to_sym
+    end
+    if cohort.empty? then
+      cohort = "Cohort not given".to_sym
+    end
+    students << {name: name, cohort: cohort}
+    puts "Now we have #{students.count} student#{students.count > 1 ? "s" : ""}"
+    puts "put thename of the student"
+    name = gets.chomp.to_sym
+    puts "put the cohort of the student"
+    cohort = gets.chomp.to_sym
+  end
+  students
 end
-students
+# ----------------------- Exercise 12 -----------------------
+# What happens if the user doesn't enter any students?
+# It will try to print an empty list. How can you use an if statement
+# (Control Flow) to only print the list if there is at least one student in there?
+
+def input_students_two_values
+  students = []
+  puts "To finish hit return two times"
+  puts "put the name of the student"
+  name = gets.chomp.to_sym #chomp - removes new lines (without chomp the input will never be empty and we will never end the form)
+  puts "put the cohort of the student"
+  cohort = gets.rstrip.to_sym # rstrip - removes whitespaces and empty lines
+  while !name.empty? || !cohort.empty? do
+    if name.empty? then
+      name = "Name not given".to_sym
+    end
+    if cohort.empty? then
+      cohort = "Cohort not given".to_sym
+    end
+    students << {name: name, cohort: cohort}
+    puts "Now we have #{students.count} student#{students.count > 1 ? "s" : ""}"
+    puts "put thename of the student"
+    name = gets.chomp.to_sym
+    puts "put the cohort of the student"
+    cohort = gets.chomp.to_sym
+  end
+  if students.count > 0
+    puts students
+  end
+end
