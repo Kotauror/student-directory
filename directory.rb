@@ -285,6 +285,7 @@ puts
 puts "1. Input the students"
 puts "2. Show the students"
 puts "3. Save the list to students.csv"
+puts "4. Load the list from students.csv"
 puts "9. Exit"
 end
 
@@ -296,6 +297,8 @@ def process(selection)
       show_students
     when "3"
       save_students
+    when "4"
+      load_students
     when "9"
       exit
     else
@@ -365,6 +368,19 @@ def save_students
   end
   file.close
   puts "Students have been saved"
+end
+
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+  name, cohort = line.chomp.split(',') # parallel assignment.
+  # we are assigning two variables at the same time.
+  # In our file every line has one comma, so if split the line at this comma,
+  # we'll get an array with two values.
+  # The first one will become the name and the second one will become the cohort.
+    @students << {name: name, cohort: cohort.to_sym}
+  end
+  file.close
 end
 
 interactive_menu()
