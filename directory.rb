@@ -275,10 +275,15 @@
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
+ #  We use gets method to get the input from the keyboard but it actually does something else.
+ #  It reads from the list of files supplied as arguments, only defaulting to
+ #  the keyboard (or, standard input stream, to be precise) if there are no files.
+ # So, our code will now break unless we tell gets() to read specifically from
+ # the input stream even if some files have been passed as an argument.
 
 def print_menu
 puts
@@ -309,9 +314,9 @@ end
 def input_students_two_values
 puts "To finish hit return two times"
 puts "put the name of the student"
-name = gets.chomp.to_sym #chomp - removes new lines (without chomp the input will never be empty and we will never end the form)
+name = STDIN.gets.chomp.to_sym #chomp - removes new lines (without chomp the input will never be empty and we will never end the form)
 puts "put the cohort of the student"
-cohort = gets.rstrip.to_sym # rstrip - removes whitespaces and empty lines
+cohort = STDIN.gets.rstrip.to_sym # rstrip - removes whitespaces and empty lines
   while !name.empty? || !cohort.empty? do
     if name.empty? then
       name = "Name not given".to_sym
@@ -322,9 +327,9 @@ cohort = gets.rstrip.to_sym # rstrip - removes whitespaces and empty lines
     @students << {name: name, cohort: cohort}
     puts "Now we have #{@students.count} student#{@students.count > 1 ? "s" : ""}"
     puts "put thename of the student"
-    name = gets.chomp.to_sym
+    name = STDIN.gets.chomp.to_sym
     puts "put the cohort of the student"
-    cohort = gets.chomp.to_sym
+    cohort = STDIN.gets.chomp.to_sym
   end
   if @students.count > 0
     return @students
@@ -370,20 +375,6 @@ def save_students
   puts "Students have been saved"
 end
 
-def load_students
-  file = File.open("students.csv", "r")
-  file.readlines.each do |line|
-  name, cohort = line.chomp.split(',') # parallel assignment.
-  # we are assigning two variables at the same time.
-  # In our file every line has one comma, so if split the line at this comma,
-  # we'll get an array with two values.
-  # The first one will become the name and the second one will become the cohort.
-    @students << {name: name, cohort: cohort.to_sym}
-  end
-  file.close
-end
-
-interactive_menu()
 #If we want to write to a file in Ruby, we need to "open" the file first.
 # This is very similar to opening a file in a normal text editor, e.g. Atom.
 # When we open a file, the open() method returns us a reference to the file that
@@ -397,3 +388,45 @@ interactive_menu()
 # using its argument as a separator. Finally, we write the csv line to the file
 # using the familiar puts() method, except we call it on a file, so it writes to
 # the file and not on the screen.
+
+
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
+  file.readlines.each do |line|
+  name, cohort = line.chomp.split(',')
+    @students << {name: name, cohort: cohort.to_sym}
+  end
+  file.close
+end
+
+# on line 4 above we use parallel assignment.
+# we are assigning two variables at the same time.
+# In our file every line has one comma, so if split the line at this comma,
+# we'll get an array with two values.
+# The first one will become the name and the second one will become the cohort.
+
+def try_load_students
+  filename = ARGV.first# first argument from the command line
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exists?(filename) # if it exists
+    load_students(filename)
+     puts "Loaded #{@students.count} from #{filename}"
+  else # if it doesn't exist
+    puts "Sorry, #{filename} doesn't exist."
+    exit # quit the program
+  end
+end
+
+# So, now the method accepts the filename as an argument.
+# However, if the argument is not supplied, then the value "students.csv" will be used.
+# This value is called the default value for an argument.
+# Providing it allows us to call the method either without the arguments or with one argument:
+
+#### load_students # will load from students.csv by default
+#### load_students(list.txt) # will load from list.txt
+
+
+try_load_students()
+interactive_menu()
+
+# when opening direcroy.rb write ruby directory.rb students.csv - then the files will be loaded
