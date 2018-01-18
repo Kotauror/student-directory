@@ -96,13 +96,28 @@ def save_students
   puts "Students have been saved"
 end
 
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-  name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+def what_files
+  puts Dir.glob("*.{csv}")
+end
+
+def load_students
+  while true do
+    puts "Type a name of file, from which you want to load students"
+    puts "You can load students from the following files:"
+    puts " #{what_files()}"
+    filename = STDIN.gets.chomp
+    if File.exists?(filename)
+      file = File.open(filename, "r")
+      file.readlines.each do |line|
+      name, cohort = line.chomp.split(',')
+        @students << {name: name, cohort: cohort.to_sym}
+        puts "File #{filename} has been loaded"
+      end
+      break
+    else # if it doesn't exist
+      puts "Sorry, #{filename} doesn't exist."
+    end
   end
-  puts "File #{filename} has been loaded"
   file.close
 end
 
