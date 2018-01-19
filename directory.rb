@@ -78,14 +78,18 @@ end
 
 def print_students # with while loop
 student_analyzed = 0
-while student_analyzed < @students.length do
-  puts "#{@students[student_analyzed][:name]} #{@students[student_analyzed][:cohort]} cohort"
-  student_analyzed += 1
-end
+  while student_analyzed < @students.length do
+    puts "#{@students[student_analyzed][:name]} #{@students[student_analyzed][:cohort]} cohort"
+    student_analyzed += 1
+  end
 end
 
 def print_footer
-print "Overall, we have #{@students.length} great students"
+  print "Overall, we have #{@students.length} great students"
+end
+
+def what_files
+  puts ">> #{Dir.glob("*.{csv}")}"
 end
 
 def save_students
@@ -102,6 +106,8 @@ def save_students
     end
   puts "#{@students.count} students have been saved to #{name_of_file}"
 end
+
+####  WITHOUT USING CSV LIBRARY - BELOW #####
 
 # def save_students
 #   puts "type the name of file where you want to save the students"
@@ -121,37 +127,56 @@ end
 #   puts "Students have been saved"
 # end
 
-def what_files
-  puts ">> #{Dir.glob("*.{csv}")}"
-end
-
 def load_students
   while true do
     puts "Type a name of file, from which you want to load students"
     puts "You can load students from the following files:"
     puts " #{what_files()}"
     filename = STDIN.gets.chomp
+    filename = filename + ".csv" if filename[-4..-1] != ".csv"
     if File.exists?(filename)
-      file = File.open(filename, "r")
-      file.readlines.each do |line|
-      name, cohort = line.chomp.split(',')
+      CSV.foreach(filename) do |row|
+        name, cohort = row[0], row[1]
         @students << {name: name, cohort: cohort.to_sym}
-        puts "File #{filename} has been loaded"
       end
+      puts "#{@students.count} student#{@students.count > 1 ? "s" : ""} ha#{@students.count > 1 ? "ve" : "s"} been loaded from #{filename}"
       break
     else # if it doesn't exist
       puts "Sorry, #{filename} doesn't exist."
     end
   end
-  file.close
 end
+
+####  WITHOUT USING CSV LIBRARY - BELOW #####
+
+# def load_students
+#   while true do
+#     puts "Type a name of file, from which you want to load students"
+#     puts "You can load students from the following files:"
+#     puts " #{what_files()}"
+#     filename = STDIN.gets.chomp
+#     filename = filename + ".csv" if filename[-4..-1] != ".csv"
+#     if File.exists?(filename)
+#       file = File.open(filename, "r")
+#       file.readlines.each do |line|
+#       name, cohort = line.chomp.split(',')
+#         @students << {name: name, cohort: cohort.to_sym}
+#         puts "File #{filename} has been loaded"
+#       end
+#       break
+#     else # if it doesn't exist
+#       puts "Sorry, #{filename} doesn't exist."
+#     end
+#   end
+#   file.close
+# end
 
 def try_load_students
   filename = ARGV.first# first argument from the command line
   return if filename.nil? # get out of the method if it isn't given
   if File.exists?(filename) # if it exists
     load_students(filename)
-     puts "Loaded #{@students.count} from #{filename}"
+    puts "Loaded #{@students.count} from #{filename}"
   else # if it doesn't exist
     puts "Sorry, #{filename} doesn't exist."
     exit # quit the program
