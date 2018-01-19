@@ -1,4 +1,4 @@
-
+require'csv'
 @students = []
 
 def interactive_menu
@@ -94,16 +94,32 @@ def save_students
   puts "existing files are:"
   puts what_files()
   name_of_file = STDIN.gets.chomp
-  file = File.open("#{name_of_file}", "w")
-  # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
-  end
-  file.close
-  puts "Students have been saved"
+  name_of_file = name_of_file + ".csv" if name_of_file[-4..-1] != ".csv"
+  CSV.open(name_of_file, "w") do |file|
+      @students.each do |student|
+        file << [student[:name], student[:cohort]]
+      end
+    end
+  puts "#{@students.count} students have been saved to #{name_of_file}"
 end
+
+# def save_students
+#   puts "type the name of file where you want to save the students"
+#   puts "you can make a new file or use an existing one"
+#   puts "existing files are:"
+#   puts what_files()
+#   name_of_file = STDIN.gets.chomp
+#   name_of_file = name_of_file + ".csv" if name_of_file[-4..-1] != ".csv"
+#   file = File.open("#{name_of_file}", "w")
+#   # iterate over the array of students
+#   @students.each do |student|
+#     student_data = [student[:name], student[:cohort]]
+#     csv_line = student_data.join(",")
+#     file.puts csv_line
+#   end
+#   file.close
+#   puts "Students have been saved"
+# end
 
 def what_files
   puts ">> #{Dir.glob("*.{csv}")}"
