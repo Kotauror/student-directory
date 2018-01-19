@@ -11,11 +11,11 @@ end
 def print_menu
 puts
 puts "1. Input the students"
-puts "2. Show the students"
-puts "3. Save the list of students to a file"
-puts "4. Load the list of students from a file"
+puts "2. Load the list of students from a file"
+puts "3. Show the students"
+puts "4. Print students from a particular cohort"
 puts "5. Print students whose name starts with a particular letter"
-puts "6. Print students from a particular cohort"
+puts "6. Save the list of students to a file"
 puts "9. Exit"
 end
 
@@ -24,15 +24,15 @@ def process(selection)
     when "1"
       input_students_two_values
     when "2"
-      show_students
-    when "3"
-      save_students
-    when "4"
       load_students
+    when "3"
+      show_students
+    when "4"
+      print_from_cohort
     when "5"
       print_students_name_letter
     when "6"
-      print_from_cohort
+      save_students
     when "9"
       exit
     else
